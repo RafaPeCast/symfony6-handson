@@ -10,22 +10,31 @@ class HelloController extends AbstractController
 {
 
     private array $messages = [
-        "Hello", "Hi", "Bye!"
+        ['message' => 'Hello', 'created' => '2023/06/12'],
+        ['message' => 'Hi', 'created' => '2023/04/12'],
+        ['message' => 'Bye!', 'created' => '2022/05/12']
     ];
 
-    #[Route('/message', name: 'app_message')]
-    public function index(): Response
+    #[Route('/messages{limit<\d+>?3}', name: 'app_message')]
+    public function index(int $limit): Response
     {
-        // return $this->render('hello/index.html.twig', [
-        //     'controller_name' => 'HelloController',
-        // ]);
-
-        return new Response(implode(',',$this->messages));
+        return $this->render(
+            'hello/index.html.twig',
+            [
+                'messages' => $this->messages,
+                'limit' => $limit
+            ]
+        );
     }
 
-    #[Route('/messages/{id}', name: 'app_show_one')]
-    public function showOne($id): Response
+    #[Route('/messages/{id<\d+>}', name: 'app_show_one')]
+    public function showOne(int $id): Response
     {
-        return new Response($this->messages[$id]);
+        return $this->render(
+            'hello/show_one.html.twig',
+            [
+                'message' => $this->messages[$id]
+            ]
+        );
     }
 }
