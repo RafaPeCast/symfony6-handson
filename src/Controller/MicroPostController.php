@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\MicroPost;
-use App\Repository\MicroPostRepository;
 use DateTime;
+use App\Entity\MicroPost;
+use App\Form\MicroPostType;
+use App\Repository\MicroPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\Mapping\Id;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MicroPostController extends AbstractController
 {
@@ -21,29 +25,65 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{post}', name: 'app_micro_post_show')]
-    public function showOne(MicroPost $post):Response
+    public function showOne(MicroPost $post): Response
     {
-        return $this->render("micro_post/show.html.twig",[
-            "post" => $post,
+        return $this->render('micro_post/show.html.twig', [
+            'post' => $post,
         ]);
     }
 
-    // #[Route('/micro-post/create', name: 'app_micro_post_create')]
-    // public function createMicroPost(EntityManagerInterface $entityManager): Response
-    // {
-    //     $microPost = new MicroPost();
-    //     $microPost->setTitle("It comes from controller");
-    //     $microPost->setText("Hi!");
-    //     $microPost->setCreated(new DateTime());
+    #[Route('micro-post/add', name: 'app_micro_post_add', priority: 2)]
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(MicroPostType::class, new MicroPost());
 
-    //     $entityManager->persist($microPost);
-    //     $entityManager->flush();
+        $form->handleRequest($request);
 
-    //     // dd($posts->findOneBy(["title"=>"Welcome to Atexis!"]));
-    //     return $this->render('micro_post/index.html.twig', [
-    //         'response' => "Saved new micro post with id ". $microPost->getId(),
-    //     ]);
-    // }
+        if($form->isSubmitted() && $form->isValid()){
+            $post = $form->getData();
+            $post->setCreated(new DateTime());
 
+            $entityManager->persist($post);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Your micro post have been added');
 
+            return $this->redirectToRoute('app_micro_post');
+
+        }
+
+        return $this->render(
+            'micro_post/add.html.twig',
+            [
+                'form' => $form
+            ]
+        );
+    }
+
+    #[Route('micro-post/{post}/edit', name: 'app_micro_post_edit')]
+    public function edit(MicroPost $post, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(MicroPostType::class, $post);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $post = $form->getData();
+
+            $entityManager->persist($post);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Your micro post have been updated');
+
+            return $this->redirectToRoute('app_micro_post');
+
+        }
+
+        return $this->render(
+            'micro_post/edit.html.twig',
+            [
+                'form' => $form,
+                'id' => $post->getId()
+            ]
+        );
+    }
 }

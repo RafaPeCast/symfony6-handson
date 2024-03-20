@@ -9,7 +9,7 @@
 
         {% for post in posts %}
             <div>
-                <a href="{{ path('app_micro_post_show', {post: post.id}) }}">
+                <a href='{{ path('app_micro_post_show', {post: post.id}) }}'>
                 {{ post.title }}
                 </a>
             </div>
@@ -20,6 +20,10 @@
         <div>There's nothing here yet!</div>
 
     {% endif %}
+    <hr>
+    <div>
+        <a href='{{ path('app_micro_post_add') }}'>Create a new post</a>
+    </div>
 </div>
 
 {% endblock %}

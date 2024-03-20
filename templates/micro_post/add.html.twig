@@ -1,0 +1,11 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}Create new post{% endblock %}
+
+{% block body %}
+    {{ include ('micro_post/_form.html.twig') }}
+
+    <div>
+		<a href="{{ path('app_micro_post') }}">Go back</a>
+	</div>
+{% endblock %}
