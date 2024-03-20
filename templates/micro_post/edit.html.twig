@@ -3,13 +3,11 @@
 {% block title %}Editing an existing post{% endblock %}
 
 {% block bread %}
-→ Post → Edit
+→ <a href="{{ path('app_micro_post_show', {post: id}) }}"> Post </a> → Edit
 {% endblock %}
 
 {% block body %}
+
 {{ include ('micro_post/_form.html.twig') }}
 
-<div>
-  <a href='{{ path('app_micro_post_show', {post: id}) }}'>Go back</a>
-</div>
 {% endblock %}
