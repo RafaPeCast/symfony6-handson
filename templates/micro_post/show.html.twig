@@ -1,26 +1,15 @@
 {% extends 'base.html.twig'%}
 
 {% block title %}Post -
-	{{post.title}}
+{{post.title}}
+{% endblock %}
+
+{% block bread %}
+→ Post
 {% endblock %}
 
 {% block body %}
 
-	<h3>{{post.title}}</h3>
-	<p>{{post.text}}</p>
+{{include('micro_post/_post.html.twig', {post:post})}}
 
-	<div style="color:grey">
-		{% if date(post.created) < date('-1year') %}
-			<p>Older than 1 year</p>
-		{% else %}
-			<p>{{post.created|date('d/m/Y')}}</p>
-		{% endif %}
-		<div>
-			<a href="{{ path('app_micro_post_edit', {post: post.id}) }}">Edit this post</a>
-		</div>
-	</div>
-
-	<div>
-		<a href="{{ path('app_micro_post') }}">Go back</a>
-	</div>
 {% endblock %}
