@@ -31,27 +31,36 @@
 		<div class="text-4xl">
 			<a href="{{path('app_micro_post')}}">Home</a>
 			{% block bread %}
-				
+
 			{% endblock %}
 		</div>
 		<div class="text-right">
 			<div class="text-sm text-gray-400 dark:text-gray-500 ">
-				<div>Login & registration goes here</div>
-
-				<div>
-					<a href='{{ path('app_micro_post_add') }}'>Create a new post</a>
-				</div>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<div>
+						<a href='{{ path('app_micro_post_add') }}'>Create a new post</a>
+					</div>
+					<div>
+						<a href='{{ path('app_logout') }}'>Logout</a>
+					</div>
+				{% else %}
+					<div>
+						<a href="{{ path("app_login")}}">Login</a>
+					</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
 
 	<div class="w-full md:w-2/3 mx-auto">
-        {% for message in app.flashes('success') %}
-            <div class="border-1 rounded-md p-2 border-green-300 bg-green-100 dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
-        {% endfor %}
+		{% for message in app.flashes('success') %}
+		<div
+			class="border-1 rounded-md p-2 border-green-300 bg-green-100 dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">
+			{{ message }}</div>
+		{% endfor %}
 
-        {% block body %}{% endblock %}
-        </div> 
+		{% block body %}{% endblock %}
+	</div>
 
 </body>
 
