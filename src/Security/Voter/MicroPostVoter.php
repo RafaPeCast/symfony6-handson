@@ -13,9 +13,7 @@ class MicroPostVoter extends Voter
 {
     public function __construct(
         private Security $security
-    )
-    {
-        
+    ){     
     }
 
     protected function supports(string $attribute, mixed $subject): bool
