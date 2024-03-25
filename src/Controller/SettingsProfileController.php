@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\UserProfile;
 use App\Form\UserProfileType;
+use App\Form\ProfileImageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,10 +53,12 @@ class SettingsProfileController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function profileImage(): Response
     {
+        $form = $this->createForm(ProfileImageType::class);
+        
         return $this->render(
             'settings_profile/profile_image.html.twig',
             [
-                // 'form' => $form->createView(),
+                'form' => $form->createView(),
             ]
         );
     }
