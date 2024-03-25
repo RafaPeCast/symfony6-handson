@@ -1,0 +1,16 @@
+{% extends 'base.html.twig'%}
+
+{% block title %}User Profile{% endblock %}
+
+{% block bread %}
+→ <span class="text-gray-600 dark:text-gray-400">{{ user.userProfile.name ?? user.email }}'s</span> Profile
+{% endblock %}
+
+{% block body %}
+
+{{include ('profile/_profile_header.html.twig')}}
+
+{{include ('profile/_profile_tabs.html.twig')}}
+
+{{include ('micro_post/_post_list.html.twig', { posts: user.posts }) }}
+{% endblock %}
