@@ -83,6 +83,7 @@ public function profileImage(
 
                 $profile = $user->getUserProfile() ?? new UserProfile();
                 $profile->setImage($newFileName);
+                $user->setUserProfile($profile);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 $this->addFlash('success', 'Your profile image was updated.');
